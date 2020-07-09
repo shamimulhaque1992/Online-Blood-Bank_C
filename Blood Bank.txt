@@ -1,0 +1,138 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct Blood_donor
+{
+	char id[30];
+	char name[30];
+	char blood_group[5];
+	char phon_no[20];
+	char MAIL[50];
+	struct Blood_donor *link;
+}node;
+
+node *header=NULL;
+node *get_node()
+{
+	return((node *)malloc(sizeof(node)));
+}
+
+void insert()
+{
+	char id[30];
+	char phon_no[20];
+	char name[30];
+	char bp[5];
+	char MAIL[50];
+	node *p;
+	printf("Enter ID: ");
+	scanf("%s",&id);
+	printf("Enter Name: ");
+	scanf("%s",&name);
+	printf("Enter Blood_group: ");
+	scanf("%s",&bp);
+	printf("Phone No: ");
+	scanf("%s",&phon_no);
+	printf("Enter E-mail Address: ");
+	scanf("%s",&MAIL);
+	p=get_node();
+	strcpy(p->id,id);
+	strcpy(p->phon_no,phon_no);
+	strcpy(p->name,name);
+	strcpy (p->blood_group,bp);
+	strcpy (p->MAIL,MAIL);
+	p->link=NULL;
+	if(header==NULL)
+		header=p;
+	else
+	{
+	    node *temp = header;
+	    while(temp->link != NULL)
+            temp = temp -> link;
+        temp->link = p;
+
+	}
+}
+
+void del()
+{
+	node *temp;
+	if(header==NULL)
+	{
+		printf("Empty List\n");
+		return;
+	}
+	else
+	{
+		temp=header;
+		header=header->link;
+		printf("The following record is deleted : %s %s %s %s %s\n",temp->id,temp->name,temp->blood_group,temp->phon_no,temp->MAIL);
+		free(temp);
+	}
+}
+
+void display()
+{
+	node *temp;
+	printf("ID             Name       Phone No             E-mail address\n");
+	for(temp=header;temp!=NULL;temp=temp->link)
+        printf("%-4s   %-10s  %s      %s\n",temp->id,temp->name,temp->phon_no,temp->MAIL);
+}
+
+void search()
+{
+	char bp[5];
+	node *temp;
+	printf("Enter the  Blood_group to be searched : ");
+	scanf("%s",&bp);
+	printf("%s\n", bp);
+	int flag = 0, fl = 0;
+
+	for(temp=header;temp!=NULL;temp=temp->link)
+	{
+
+		if(strcmp(bp, temp->blood_group) == 0)
+		{
+		    if(fl == 0)
+                printf("ID              Name            Phone No            E-mail address \n");
+            fl = 1;
+			printf("%-4s    %-10s    %s       %s \n",temp->id,temp->name,temp->phon_no,temp->MAIL);
+			flag = 1;
+		}
+	}
+	if(flag == 0)
+        printf("Blood Donor Record Not Found !!!\n");
+}
+
+
+void menu()
+{
+	int choice;
+		printf("\nChoose :\n1 - Insert Blood Donor Record\n2 - Delete Blood Donor Record\n3 - Search Blood Donor Record\n4 - Display Blood Donor Records\nPress any other key to EXIT !\n");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+		case 1 : insert();break;
+		case 2 : del();break;
+		case 3 : search();break;
+		case 4 : display();break;
+		default : exit(0);break;
+		}
+}
+
+int main()
+{
+    printf("\t\t\t\t----------------------------------------------\n");
+    printf("\t\t\t\t-                                            -\n");
+    printf("\t\t\t\t-     welcome to our Online Blood Bank       -\n");
+    printf("\t\t\t\t-                                            -\n");
+    printf("\t\t\t\t----------------------------------------------\n");
+	for(;;)
+	{
+		menu();
+	}
+	return 0;
+}
+
+
